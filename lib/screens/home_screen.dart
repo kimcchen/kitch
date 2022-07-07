@@ -35,6 +35,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final user = context.read<FirebaseAuthMethods>().user;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.red[200],
+        leading: Icon(Icons.people_alt_outlined),
+        title: Text('Feed us'),
+        actions: [
+          Icon(Icons.picture_as_pdf),
+        ],
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
