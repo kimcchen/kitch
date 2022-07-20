@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "432550317566",
+    "project_id": "auth-practice-9f4b8",
+    "storage_bucket": "auth-practice-9f4b8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:432550317566:android:cb554fb2e9d9661c4384af",
+        "android_client_info": {
+          "package_name": "kimberlychen.auth_practice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "432550317566-vtns51d1s58objkc0mkc8f224d9jqdn2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2GvQ4zh2pzbF_Q_eapXlJY2759GxF1DI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "432550317566-vtns51d1s58objkc0mkc8f224d9jqdn2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "432550317566-l8q1nb65897rpvbvqb6p3kn10ogqahqo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "kimberlychen.authPractice"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

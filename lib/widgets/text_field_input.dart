@@ -5,12 +5,14 @@ class TextFieldInput extends StatelessWidget {
   final bool isPass;
   final String hintText;
   final TextInputType textInputType;
+  final int maxLines;
   const TextFieldInput({
     Key? key,
     required this.textEditingController,
     this.isPass = false,
     required this.hintText,
     required this.textInputType,
+    required this.maxLines,
   }) : super(key: key);
 
   @override
@@ -41,6 +43,7 @@ class TextFieldInput extends StatelessWidget {
         ),
         keyboardType: textInputType,
         obscureText: isPass,
+        maxLines: maxLines,
       ),
     );
   }

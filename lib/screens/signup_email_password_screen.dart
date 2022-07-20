@@ -112,11 +112,13 @@ class _EmailPasswordSignupState extends State<EmailPasswordSignup> {
                             textEditingController: fullNameController,
                             hintText: 'Full Name',
                             textInputType: TextInputType.emailAddress,
+                            maxLines: 1,
                           ),
                           TextFieldInput(
                             textEditingController: emailController,
                             hintText: 'Email',
                             textInputType: TextInputType.text,
+                            maxLines: 1,
                           ),
                           // SizedBox(
                           //   height:,
@@ -125,11 +127,13 @@ class _EmailPasswordSignupState extends State<EmailPasswordSignup> {
                             textEditingController: usernameController,
                             hintText: 'Username',
                             textInputType: TextInputType.emailAddress,
+                            maxLines: 1,
                           ),
                           TextFieldInput(
                             textEditingController: passwordController,
                             hintText: 'Password',
                             textInputType: TextInputType.text,
+                            maxLines: 1,
                           ),
                         ],
                       ),

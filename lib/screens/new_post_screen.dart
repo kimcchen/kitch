@@ -22,17 +22,22 @@ class _NewPostState extends State<NewPost> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(15),
+                    bottomLeft: Radius.circular(15)),
+                color: Colors.red[100],
+              ),
               width: 390,
-              height: 85,
-              color: Colors.deepOrangeAccent,
+              height: 100,
+              // color: Colors.red[100],
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -51,7 +56,7 @@ class _NewPostState extends State<NewPost> {
               ),
             ),
             SizedBox(
-              height: 100,
+              height: 25,
             ),
             Container(
               width: 200,
@@ -62,23 +67,52 @@ class _NewPostState extends State<NewPost> {
               height: 50,
             ),
             TextFieldInput(
-                textEditingController: titleController,
-                hintText: 'Title',
-                textInputType: TextInputType.text),
+              textEditingController: titleController,
+              hintText: 'Title',
+              textInputType: TextInputType.text,
+              maxLines: 1,
+            ),
             SizedBox(
               height: 20,
             ),
             Container(
-              height: 200,
               child: TextFieldInput(
-                  textEditingController: captionController,
-                  hintText: 'Caption',
-                  textInputType: TextInputType.text),
-            )
+                textEditingController: captionController,
+                hintText: 'Caption',
+                textInputType: TextInputType.text,
+                maxLines: 8,
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.only(top: 55),
+              child: SizedBox(
+                width: 300,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: null,
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: const [
+                      Text('Share'),
+                      SizedBox(
+                        width: 90,
+                      ),
+                      Icon(Icons.arrow_forward_ios_rounded),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
-    ));
+    );
   }
 }
 //    return Scaffold(
