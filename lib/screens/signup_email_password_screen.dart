@@ -1,6 +1,6 @@
 import 'package:auth_practice/screens/login_email_password_screen.dart';
 import 'package:auth_practice/services/firebase_auth_methods.dart';
-import 'package:auth_practice/utils/showSnackBar.dart';
+import 'package:auth_practice/utils/utils.dart';
 import 'package:auth_practice/widgets/text_field_input.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
