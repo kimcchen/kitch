@@ -10,6 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'screens/signup_email_password_screen.dart';
 
+//small change comment
 Future<void> main() async {
   // Ensure that Firebase is initialized
   WidgetsFlutterBinding.ensureInitialized();
