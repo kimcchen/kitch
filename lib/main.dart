@@ -10,7 +10,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'screens/signup_email_password_screen.dart';
 
-//small change comment
 Future<void> main() async {
   // Ensure that Firebase is initialized
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,26 +32,43 @@ class MyApp extends StatelessWidget {
         Provider<FirebaseAuthMethods>(
           create: (_) => FirebaseAuthMethods(),
         ),
-        StreamProvider(
-          create: (context) => context.read<FirebaseAuthMethods>().authState,
-          initialData: null,
-        ),
+        // StreamProvider(
+        //   create: (context) => context.read<FirebaseAuthMethods>().authState,
+        //   initialData: null,
+        // ),
         ChangeNotifierProvider(
           create: (_) => UserProvider(),
         ),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        title: 'Kitch',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: const NewPost(),
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              if (snapshot.hasData) {
+                return HomeScreen();
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('${snapshot.error}'),
+                );
+              }
+            }
+            return const LoginScreen();
+            // DON'T FORGET TO ADD CIRCULAR PROGRESS INDICATOR
+          },
+        ),
         routes: {
           EmailPasswordSignup.routeName: (context) =>
               const EmailPasswordSignup(),
           EmailPasswordLogin.routeName: (context) => const EmailPasswordLogin(),
         },
+        // home: const AuthWrapper(),
       ),
     );
   }
