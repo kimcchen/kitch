@@ -21,11 +21,22 @@ class _NewPostState extends State<NewPost> {
   Uint8List? _file;
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _captionController = TextEditingController();
+  bool _isLoading = false;
+
+  void clearImage() {
+    setState(() {
+      _file == null;
+      print('FILE WAS SET TO NULL');
+    });
+  }
 
   void postImage(
     String uid,
     String username,
   ) async {
+    setState(() {
+      _isLoading = true;
+    });
     try {
       String res = await FirestoreMethods().uploadPost(
         _titleController.text,
@@ -36,8 +47,17 @@ class _NewPostState extends State<NewPost> {
       );
 
       if (res == "success") {
+        setState(() {
+          _isLoading = false;
+          _file == null;
+        });
         showSnackBar(context, 'Posted!');
+        // Navigator.pop(context);
+        clearImage();
       } else {
+        setState(() {
+          _isLoading = false;
+        });
         showSnackBar(context, res);
       }
     } catch (e) {
@@ -78,7 +98,7 @@ class _NewPostState extends State<NewPost> {
                 padding: const EdgeInsets.all(20),
                 child: Text('Cancel'),
                 onPressed: () async {
-                  Navigator.of(context).pop();
+                  Navigator.pop(context);
                 },
               ),
             ],
@@ -95,7 +115,7 @@ class _NewPostState extends State<NewPost> {
 
   @override
   Widget build(BuildContext context) {
-    final Userer user = Provider.of<UserProvider>(context).getUser;
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return _file == null
         ? Material(
@@ -145,6 +165,7 @@ class _NewPostState extends State<NewPost> {
                       ],
                     ),
                   ),
+                  _isLoading ? const LinearProgressIndicator() : Container(),
                   SizedBox(
                     height: 25,
                   ),
@@ -175,10 +196,6 @@ class _NewPostState extends State<NewPost> {
                   SizedBox(
                     height: 10,
                   ),
-                  ElevatedButton(
-                    onPressed: null,
-                    child: Text('Choose Picture'),
-                  ),
                   SizedBox(
                     height: 25,
                   ),
@@ -205,7 +222,8 @@ class _NewPostState extends State<NewPost> {
                       width: 300,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () => postImage(user.uid, user.username),
+                        onPressed: () => postImage(userProvider.getUser.uid,
+                            userProvider.getUser.username),
                         style: ElevatedButton.styleFrom(
                           primary: Colors.black,
                           shape: RoundedRectangleBorder(
