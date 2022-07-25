@@ -68,6 +68,8 @@ flutter:
   assets:
     - images/undraw_cooking_lyxy.png
     - images/undraw_cooking_lyxy.svg
+    - images/chad-montano-M0lUxgLnlfk-unsplash.jpg
+    - images/george-zheng-0Kbjfwunink-unsplash.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
