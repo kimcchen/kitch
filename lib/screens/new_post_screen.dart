@@ -23,12 +23,12 @@ class _NewPostState extends State<NewPost> {
   final TextEditingController _captionController = TextEditingController();
   bool _isLoading = false;
 
-  void clearImage() {
-    setState(() {
-      _file == null;
-      print('FILE WAS SET TO NULL');
-    });
-  }
+  // void clearImage() {
+  //   setState(() {
+  //     _file == null;
+  //     print('FILE WAS SET TO NULL');
+  //   });
+  // }
 
   void postImage(
     String uid,
@@ -52,8 +52,8 @@ class _NewPostState extends State<NewPost> {
           _file == null;
         });
         showSnackBar(context, 'Posted!');
-        // Navigator.pop(context);
-        clearImage();
+        Navigator.pop(context);
+        // clearImage();
       } else {
         setState(() {
           _isLoading = false;
