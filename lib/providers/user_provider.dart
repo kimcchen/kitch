@@ -1,17 +1,20 @@
+import 'package:auth_practice/services/firebase_auth_methods.dart';
 import 'package:flutter/widgets.dart';
 import 'package:auth_practice/models/user.dart';
-import 'package:auth_practice/services/firebase_auth_methods.dart';
 
 class UserProvider with ChangeNotifier {
-  User? _user;
+  Userer? _user;
   final FirebaseAuthMethods _authMethods = FirebaseAuthMethods();
 
-  User? get getUser => _user;
-  // User get getUser => _user!;
-
   Future<void> refreshUser() async {
-    User user = await _authMethods.getUserDetails();
+    Userer user = await _authMethods.getUserDetails();
+    print("THIS IS USER: ${user.toJSON()}");
     _user = user;
+    if (_user != null) {
+      print("THE USER IS NOT NULL");
+    }
     notifyListeners();
   }
+
+  Userer get getUser => _user!;
 }

@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:auth_practice/models/user.dart';
 import 'package:auth_practice/providers/user_provider.dart';
+import 'package:auth_practice/services/firestore_methods.dart';
 import 'package:auth_practice/utils/utils.dart';
 import 'package:auth_practice/widgets/text_field_input.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,51 @@ class NewPost extends StatefulWidget {
 
 class _NewPostState extends State<NewPost> {
   Uint8List? _file;
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController captionController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _captionController = TextEditingController();
+  bool _isLoading = false;
+
+  // void clearImage() {
+  //   setState(() {
+  //     _file == null;
+  //     print('FILE WAS SET TO NULL');
+  //   });
+  // }
+
+  void postImage(
+    String uid,
+    String username,
+  ) async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      String res = await FirestoreMethods().uploadPost(
+        _titleController.text,
+        _captionController.text,
+        _file!,
+        uid,
+        username,
+      );
+
+      if (res == "success") {
+        setState(() {
+          _isLoading = false;
+          _file == null;
+        });
+        showSnackBar(context, 'Posted!');
+        Navigator.pop(context);
+        // clearImage();
+      } else {
+        setState(() {
+          _isLoading = false;
+        });
+        showSnackBar(context, res);
+      }
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
 
   _selectImage(BuildContext context) async {
     return showDialog(
@@ -54,7 +98,7 @@ class _NewPostState extends State<NewPost> {
                 padding: const EdgeInsets.all(20),
                 child: Text('Cancel'),
                 onPressed: () async {
-                  Navigator.of(context).pop();
+                  Navigator.pop(context);
                 },
               ),
             ],
@@ -65,13 +109,13 @@ class _NewPostState extends State<NewPost> {
   @override
   void dispose() {
     super.dispose();
-    titleController.dispose();
-    captionController.dispose();
+    _titleController.dispose();
+    _captionController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final User? user = Provider.of<UserProvider>(context).getUser;
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return _file == null
         ? Material(
@@ -101,9 +145,14 @@ class _NewPostState extends State<NewPost> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Icon(
-                          Icons.close,
-                          size: 50,
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.close,
+                            size: 25,
+                          ),
                         ),
                         SizedBox(
                           width: 65,
@@ -116,6 +165,7 @@ class _NewPostState extends State<NewPost> {
                       ],
                     ),
                   ),
+                  _isLoading ? const LinearProgressIndicator() : Container(),
                   SizedBox(
                     height: 25,
                   ),
@@ -146,15 +196,11 @@ class _NewPostState extends State<NewPost> {
                   SizedBox(
                     height: 10,
                   ),
-                  ElevatedButton(
-                    onPressed: null,
-                    child: Text('Choose Picture'),
-                  ),
                   SizedBox(
                     height: 25,
                   ),
                   TextFieldInput(
-                    textEditingController: titleController,
+                    textEditingController: _titleController,
                     hintText: 'Title',
                     textInputType: TextInputType.text,
                     maxLines: 1,
@@ -164,7 +210,7 @@ class _NewPostState extends State<NewPost> {
                   ),
                   Container(
                     child: TextFieldInput(
-                      textEditingController: captionController,
+                      textEditingController: _captionController,
                       hintText: 'Caption',
                       textInputType: TextInputType.text,
                       maxLines: 8,
@@ -176,7 +222,8 @@ class _NewPostState extends State<NewPost> {
                       width: 300,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: null,
+                        onPressed: () => postImage(userProvider.getUser.uid,
+                            userProvider.getUser.username),
                         style: ElevatedButton.styleFrom(
                           primary: Colors.black,
                           shape: RoundedRectangleBorder(

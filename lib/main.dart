@@ -1,6 +1,5 @@
 import 'package:auth_practice/providers/user_provider.dart';
 import 'package:auth_practice/screens/home_screen.dart';
-import 'package:auth_practice/screens/feed_screen.dart';
 import 'package:auth_practice/screens/login_email_password_screen.dart';
 import 'package:auth_practice/screens/login_screen.dart';
 import 'package:auth_practice/screens/new_post_screen.dart';
@@ -47,7 +46,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: const FeedScreen(),
+        home: const NewPost(),
         routes: {
           EmailPasswordSignup.routeName: (context) =>
               const EmailPasswordSignup(),

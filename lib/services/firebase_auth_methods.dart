@@ -1,8 +1,9 @@
-import 'package:auth_practice/models/user.dart' as model;
+// import 'package:auth_practice/models/user.dart' as model;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:auth_practice/models/user.dart';
 
 import '../utils/utils.dart';
 
@@ -15,17 +16,17 @@ class FirebaseAuthMethods {
   User get user => _auth.currentUser!;
 
   // GET USER INFO
-  Future<model.User> getUserDetails() async {
+  Future<Userer> getUserDetails() async {
     User currentUser = _auth.currentUser!;
 
     DocumentSnapshot snap =
         await _firestore.collection('users').doc(currentUser.uid).get();
 
-    return model.User.fromSnap(snap);
+    return Userer.fromSnap(snap);
   }
 
   // STATE PERSISTENCE
-  Stream<User?> get authState => _auth.authStateChanges();
+  // Stream<User?> get authState => _auth.authStateChanges();
 
   // USER SIGN UP
   Future<String> signUpUser({
@@ -49,7 +50,7 @@ class FirebaseAuthMethods {
 
         // add user to our database
 
-        model.User user = model.User(
+        Userer user = Userer(
           username: username,
           uid: cred.user!.uid,
           email: email,
