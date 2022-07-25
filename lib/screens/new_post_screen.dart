@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:auth_practice/models/user.dart';
 import 'package:auth_practice/providers/user_provider.dart';
+import 'package:auth_practice/services/firestore_methods.dart';
 import 'package:auth_practice/utils/utils.dart';
 import 'package:auth_practice/widgets/text_field_input.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,31 @@ class NewPost extends StatefulWidget {
 
 class _NewPostState extends State<NewPost> {
   Uint8List? _file;
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController captionController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _captionController = TextEditingController();
+
+  void postImage(
+    String uid,
+    String username,
+  ) async {
+    try {
+      String res = await FirestoreMethods().uploadPost(
+        _titleController.text,
+        _captionController.text,
+        _file!,
+        uid,
+        username,
+      );
+
+      if (res == "success") {
+        showSnackBar(context, 'Posted!');
+      } else {
+        showSnackBar(context, res);
+      }
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
 
   _selectImage(BuildContext context) async {
     return showDialog(
@@ -65,13 +89,13 @@ class _NewPostState extends State<NewPost> {
   @override
   void dispose() {
     super.dispose();
-    titleController.dispose();
-    captionController.dispose();
+    _titleController.dispose();
+    _captionController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final User? user = Provider.of<UserProvider>(context).getUser;
+    final Userer user = Provider.of<UserProvider>(context).getUser;
 
     return _file == null
         ? Material(
@@ -101,9 +125,14 @@ class _NewPostState extends State<NewPost> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Icon(
-                          Icons.close,
-                          size: 50,
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.close,
+                            size: 25,
+                          ),
                         ),
                         SizedBox(
                           width: 65,
@@ -154,7 +183,7 @@ class _NewPostState extends State<NewPost> {
                     height: 25,
                   ),
                   TextFieldInput(
-                    textEditingController: titleController,
+                    textEditingController: _titleController,
                     hintText: 'Title',
                     textInputType: TextInputType.text,
                     maxLines: 1,
@@ -164,7 +193,7 @@ class _NewPostState extends State<NewPost> {
                   ),
                   Container(
                     child: TextFieldInput(
-                      textEditingController: captionController,
+                      textEditingController: _captionController,
                       hintText: 'Caption',
                       textInputType: TextInputType.text,
                       maxLines: 8,
@@ -176,7 +205,7 @@ class _NewPostState extends State<NewPost> {
                       width: 300,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: null,
+                        onPressed: () => postImage(user.uid, user.username),
                         style: ElevatedButton.styleFrom(
                           primary: Colors.black,
                           shape: RoundedRectangleBorder(
