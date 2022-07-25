@@ -53,6 +53,7 @@ class _NewPostState extends State<NewPost> {
         });
         showSnackBar(context, 'Posted!');
         Navigator.pop(context);
+
         // clearImage();
       } else {
         setState(() {
