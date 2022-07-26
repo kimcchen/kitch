@@ -5,6 +5,7 @@ import 'package:auth_practice/screens/login_email_password_screen.dart';
 import 'package:auth_practice/screens/login_screen.dart';
 import 'package:auth_practice/screens/new_post_screen.dart';
 import 'package:auth_practice/services/firebase_auth_methods.dart';
+import 'package:auth_practice/widgets/post_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';

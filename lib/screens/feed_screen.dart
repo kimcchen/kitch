@@ -1,4 +1,8 @@
+import 'package:auth_practice/widgets/post_card.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
+import 'new_post_screen.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({Key? key}) : super(key: key);
@@ -49,131 +53,33 @@ class _FeedScreenState extends State<FeedScreen> {
         ],
       ),
       // -----------------------------------------------------------------------
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(
-              // height: 10,
-              height: height * .02,
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+        builder: (context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) => PostCard(
+              snap: snapshot.data!.docs[index].data(),
             ),
-            Row(
-              children: [
-                SizedBox(
-                  width: width * .02,
-                ),
-                Icon(
-                  Icons.account_circle_rounded,
-                  size: 30,
-                ),
-                SizedBox(
-                  width: width * .01,
-                ),
-                Text(
-                  'user_123456',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: height * .01,
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: height * .02,
-                ),
-                Text('Food Title',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                    textScaleFactor: 1.5),
-                SizedBox(
-                  width: height * .13,
-                ),
-                Text(
-                  '07/26/22 at 12:00 PM',
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: height * .01,
-            ),
-            Stack(children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: NetworkImage(
-                      'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80',
-                    ),
-                  ),
-                ),
-                height: height * .475,
-              ),
-              Container(
-                  height: height * .475,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      gradient: LinearGradient(
-                          begin: FractionalOffset.topCenter,
-                          end: FractionalOffset.bottomCenter,
-                          colors: [
-                            Colors.transparent.withOpacity(0.0),
-                            Colors.grey.withOpacity(0.0),
-                            Colors.black45,
-                          ],
-                          stops: [
-                            0.8,
-                            0.7,
-                            1.0,
-                          ])),
-                  alignment: Alignment
-                      .bottomLeft, // This aligns the child of the container
-                  child: Padding(
-                      padding: EdgeInsets.only(
-                          bottom: 5.0,
-                          left: 12,
-                          right: 10), //some spacing to the child from bottom
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: width * .6,
-                            child: Text(
-                                'This is a caption that describes the food...',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500)),
-                          ),
-                          SizedBox(
-                            width: width * .05,
-                          ),
-                          Icon(
-                            Icons.local_fire_department,
-                            size: 30,
-                            color: Colors.white,
-                          ),
-                          Text('12',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500)),
-                          SizedBox(width: width * .05),
-                          Icon(
-                            Icons.mode_comment,
-                            size: 25,
-                            color: Colors.white,
-                          ),
-                          SizedBox(width: width * .01),
-                          Text('3',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500))
-                        ],
-                      ))),
-            ]),
-          ],
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const NewPost()),
+          );
+        },
+        backgroundColor: Colors.amber,
+        child: Icon(
+          Icons.add,
         ),
       ),
     );
