@@ -32,10 +32,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Userer user = Provider.of<UserProvider>(context).getUser;
+    Userer user = Provider.of<UserProvider>(context).getUser;
     // User user = Provider.of<UserProvider>(context).getUser as User;
 
-    final user = context.read<FirebaseAuthMethods>().user;
+    // final user = context.read<FirebaseAuthMethods>().user;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red[200],
@@ -49,8 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Text(userer.email),
-            Text(user.email!),
+            Text(user.fullName),
             ElevatedButton(
               onPressed: () {
                 context.read<FirebaseAuthMethods>().signOut(context);

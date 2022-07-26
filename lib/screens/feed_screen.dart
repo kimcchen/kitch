@@ -8,21 +8,25 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
-
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.amber,
         title: Row(
-        children: [
-          Text('kitch',
-              textScaleFactor: 1.5,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold)
-          ),
-          Icon(Icons.local_fire_department_sharp, size: 40, color: Colors.black,)
-        ],
+          children: [
+            Text('kitch',
+                textScaleFactor: 1.5,
+                style: TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold)),
+            Icon(
+              Icons.local_fire_department_sharp,
+              size: 40,
+              color: Colors.black,
+            )
+          ],
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
@@ -30,67 +34,71 @@ class _FeedScreenState extends State<FeedScreen> {
           ),
         ),
         actions: [
-          Icon(Icons.person_add_alt_1_rounded,
-          size: 30,
-          color: Colors.black,),
+          Icon(
+            Icons.person_add_alt_1_rounded,
+            size: 30,
+            color: Colors.black,
+          ),
           SizedBox(width: 15),
-          Icon(Icons.account_circle_rounded,
-          size: 40,
-          color: Colors.black,),
+          Icon(
+            Icons.account_circle_rounded,
+            size: 40,
+            color: Colors.black,
+          ),
           SizedBox(width: 12)
         ],
       ),
+      // -----------------------------------------------------------------------
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(
-              height: 10,
+              // height: 10,
+              height: height * .02,
             ),
             Row(
               children: [
                 SizedBox(
-                  width: 10
+                  width: width * .02,
                 ),
-                Icon(Icons.account_circle_rounded,
-                size: 30,),
-                SizedBox(
-                  width: 5,
-                ),
-                Text('user_123456',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: 12,
-                ),
-                Text('Food Title',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold
-                ) ,
-                textScaleFactor: 1.5
+                Icon(
+                  Icons.account_circle_rounded,
+                  size: 30,
                 ),
                 SizedBox(
-                  width: 155,
+                  width: width * .01,
                 ),
                 Text(
-                    '07/26/22 at 12:00 PM',
+                  'user_123456',
                   style: TextStyle(
-                    fontWeight: FontWeight.w500
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
             ),
             SizedBox(
-              height: 5,
+              height: height * .01,
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  width: height * .02,
+                ),
+                Text('Food Title',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                    textScaleFactor: 1.5),
+                SizedBox(
+                  width: height * .13,
+                ),
+                Text(
+                  '07/26/22 at 12:00 PM',
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: height * .01,
             ),
             Stack(children: <Widget>[
               Container(
@@ -103,45 +111,67 @@ class _FeedScreenState extends State<FeedScreen> {
                     ),
                   ),
                 ),
-                height: 400.0,
+                height: height * .475,
               ),
               Container(
-                height: 400.0,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    gradient: LinearGradient(
-                        begin: FractionalOffset.topCenter,
-                        end: FractionalOffset.bottomCenter,
-                        colors: [
-                          Colors.transparent.withOpacity(0.0),
-                          Colors.grey.withOpacity(0.0),
-                          Colors.black45,
-                        ],
-                        stops: [
-                          0.8,
-                          0.7,
-                          1.0,
-                        ])),
-                  alignment: Alignment.bottomLeft, // This aligns the child of the container
+                  height: height * .475,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      gradient: LinearGradient(
+                          begin: FractionalOffset.topCenter,
+                          end: FractionalOffset.bottomCenter,
+                          colors: [
+                            Colors.transparent.withOpacity(0.0),
+                            Colors.grey.withOpacity(0.0),
+                            Colors.black45,
+                          ],
+                          stops: [
+                            0.8,
+                            0.7,
+                            1.0,
+                          ])),
+                  alignment: Alignment
+                      .bottomLeft, // This aligns the child of the container
                   child: Padding(
-                      padding: EdgeInsets.only(bottom: 5.0, left: 12, right: 10), //some spacing to the child from bottom
+                      padding: EdgeInsets.only(
+                          bottom: 5.0,
+                          left: 12,
+                          right: 10), //some spacing to the child from bottom
                       child: Row(
                         children: [
                           SizedBox(
-                            width: 290,
-                            child:
-                                 Text('This is a caption that describes the food...', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
+                            width: width * .6,
+                            child: Text(
+                                'This is a caption that describes the food...',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500)),
                           ),
-                          Icon(Icons.local_fire_department, size: 30, color: Colors.white,),
-                          Text('12', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
-                          SizedBox(width: 10),
-                          Icon(Icons.mode_comment, size: 25, color: Colors.white,),
-                          SizedBox(width: 5),
-                          Text('3', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500))
+                          SizedBox(
+                            width: width * .05,
+                          ),
+                          Icon(
+                            Icons.local_fire_department,
+                            size: 30,
+                            color: Colors.white,
+                          ),
+                          Text('12',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500)),
+                          SizedBox(width: width * .05),
+                          Icon(
+                            Icons.mode_comment,
+                            size: 25,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: width * .01),
+                          Text('3',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500))
                         ],
-                      )
-                  )
-              ),
+                      ))),
             ]),
           ],
         ),

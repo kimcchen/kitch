@@ -53,14 +53,14 @@ class MyApp extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData) {
-                return HomeScreen();
+                return FeedScreen();
               } else if (snapshot.hasError) {
                 return Center(
                   child: Text('${snapshot.error}'),
                 );
               }
             }
-            return const FeedScreen();
+            return const LoginScreen();
             // DON'T FORGET TO ADD CIRCULAR PROGRESS INDICATOR
           },
         ),
