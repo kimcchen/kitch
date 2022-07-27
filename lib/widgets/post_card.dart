@@ -1,7 +1,13 @@
+import 'package:auth_practice/providers/user_provider.dart';
+import 'package:auth_practice/services/firestore_methods.dart';
+import 'package:auth_practice/widgets/like_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-class PostCard extends StatelessWidget {
+import '../models/user.dart';
+
+class PostCard extends StatefulWidget {
   final snap;
   const PostCard({
     Key? key,
@@ -9,7 +15,15 @@ class PostCard extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<PostCard> createState() => _PostCardState();
+}
+
+class _PostCardState extends State<PostCard> {
+  bool isLikeAnimating = false;
+
+  @override
   Widget build(BuildContext context) {
+    final Userer user = Provider.of<UserProvider>(context).getUser;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
@@ -35,7 +49,7 @@ class PostCard extends StatelessWidget {
                   width: width * .01,
                 ),
                 Text(
-                  snap['username'],
+                  widget.snap['username'],
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                   ),
@@ -53,7 +67,7 @@ class PostCard extends StatelessWidget {
                     SizedBox(
                       width: width * .023,
                     ),
-                    Text(snap['title'],
+                    Text(widget.snap['title'],
                         style: TextStyle(fontWeight: FontWeight.bold),
                         textScaleFactor: 1.5),
                   ],
@@ -62,7 +76,7 @@ class PostCard extends StatelessWidget {
                   children: [
                     Text(
                       DateFormat.yMMMd().format(
-                        snap['datePublished'].toDate(),
+                        widget.snap['datePublished'].toDate(),
                       ),
                       style: TextStyle(fontWeight: FontWeight.w500),
                     ),
@@ -105,84 +119,138 @@ class PostCard extends StatelessWidget {
             height: height * .01,
           ),
           // -------------------------------------------------------------------
-          Stack(children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: NetworkImage(snap['postUrl']),
+          GestureDetector(
+            onDoubleTap: () async {
+              await FirestoreMethods().likePost(
+                widget.snap['postId'],
+                // widget.snap['uid'],
+                user.uid,
+                widget.snap['likes'],
+              );
+              setState(() {
+                isLikeAnimating = true;
+              });
+            },
+            child: Stack(alignment: Alignment.center, children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: NetworkImage(widget.snap['postUrl']),
+                  ),
+                ),
+                height: height * .475,
+              ),
+              Center(
+                child: AnimatedOpacity(
+                  duration: const Duration(
+                    milliseconds: 200,
+                  ),
+                  opacity: isLikeAnimating ? 1 : 0,
+                  child: LikeAnimation(
+                    child: const Icon(
+                      Icons.local_fire_department,
+                      color: Colors.amber,
+                      size: 120,
+                    ),
+                    isAnimating: isLikeAnimating,
+                    duration: const Duration(
+                      milliseconds: 400,
+                    ),
+                    onEnd: () {
+                      setState(() {
+                        isLikeAnimating = false;
+                      });
+                    },
+                  ),
                 ),
               ),
-              height: height * .475,
-            ),
-            Container(
-              height: height * .475,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  gradient: LinearGradient(
-                      begin: FractionalOffset.topCenter,
-                      end: FractionalOffset.bottomCenter,
-                      colors: [
-                        Colors.transparent.withOpacity(0.0),
-                        Colors.grey.withOpacity(0.0),
-                        Colors.black45,
-                      ],
-                      stops: [
-                        0.8,
-                        0.7,
-                        1.0,
-                      ])),
-              alignment: Alignment
-                  .bottomLeft, // This aligns the child of the container
-              child: Padding(
-                padding: EdgeInsets.only(
-                    bottom: 5.0,
-                    left: 12,
-                    right: 10), //some spacing to the child from bottom
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: width * .6,
-                      child: Text(snap['description'],
+              Container(
+                height: height * .475,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    gradient: LinearGradient(
+                        begin: FractionalOffset.topCenter,
+                        end: FractionalOffset.bottomCenter,
+                        colors: [
+                          Colors.transparent.withOpacity(0.0),
+                          Colors.grey.withOpacity(0.0),
+                          Colors.black45,
+                        ],
+                        stops: [
+                          0.8,
+                          0.7,
+                          1.0,
+                        ])),
+                alignment: Alignment
+                    .bottomLeft, // This aligns the child of the container
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      bottom: 5.0,
+                      left: 12,
+                      right: 10), //some spacing to the child from bottom
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: width * .6,
+                        child: Text(widget.snap['description'],
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500)),
+                      ),
+                      SizedBox(
+                        width: width * .05,
+                      ),
+                      LikeAnimation(
+                        isAnimating: widget.snap['likes'].contains(user.uid),
+                        smallLike: true,
+                        child: GestureDetector(
+                          onTap: () async {
+                            await FirestoreMethods().likePost(
+                              widget.snap['postId'],
+                              user.uid,
+                              widget.snap['likes'],
+                            );
+                          },
+                          child: widget.snap['likes'].contains(user.uid)
+                              ? Icon(
+                                  Icons.local_fire_department,
+                                  size: 30,
+                                  color: Colors.amber,
+                                )
+                              : Icon(
+                                  Icons.local_fire_department_outlined,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
+                        ),
+                      ),
+                      Text('${widget.snap['likes'].length}',
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w500)),
-                    ),
-                    SizedBox(
-                      width: width * .05,
-                    ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Icon(
-                        Icons.local_fire_department,
-                        size: 30,
-                        color: Colors.white,
+                      SizedBox(width: width * .05),
+                      GestureDetector(
+                        onTap: () {},
+                        child: Icon(
+                          Icons.mode_comment,
+                          size: 25,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    Text('${snap['likes'].length}',
+                      SizedBox(width: width * .01),
+                      Text(
+                        '3',
                         style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w500)),
-                    SizedBox(width: width * .05),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Icon(
-                        Icons.mode_comment,
-                        size: 25,
-                        color: Colors.white,
+                            color: Colors.white, fontWeight: FontWeight.w500),
                       ),
-                    ),
-                    SizedBox(width: width * .01),
-                    Text(
-                      '3',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.w500),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ]),
+            ]),
+          ),
         ],
       ),
     );
