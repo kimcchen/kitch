@@ -1,9 +1,13 @@
+import 'dart:typed_data';
+
 import 'package:auth_practice/widgets/post_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:auth_practice/providers/user_provider.dart';
 
+import '../utils/utils.dart';
 import 'new_post_screen.dart';
 
 class FeedScreen extends StatefulWidget {
@@ -67,7 +71,10 @@ class _FeedScreenState extends State<FeedScreen> {
       ),
       // -----------------------------------------------------------------------
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('posts')
+            .orderBy('datePublished', descending: true)
+            .snapshots(),
         builder: (context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {

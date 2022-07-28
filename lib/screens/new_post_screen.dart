@@ -119,8 +119,9 @@ class _NewPostState extends State<NewPost> {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return _file == null
-        ? Material(
-            child: Center(
+        ? Scaffold(
+            backgroundColor: Colors.amber,
+            body: Center(
               child: IconButton(
                 icon: const Icon(Icons.upload),
                 onPressed: () => _selectImage(context),

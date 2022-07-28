@@ -1,6 +1,8 @@
 import 'package:auth_practice/providers/user_provider.dart';
+import 'package:auth_practice/screens/comments_screen.dart';
 import 'package:auth_practice/services/firestore_methods.dart';
 import 'package:auth_practice/widgets/like_animation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +22,22 @@ class PostCard extends StatefulWidget {
 
 class _PostCardState extends State<PostCard> {
   bool isLikeAnimating = false;
+  int commentLen = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    getComments();
+  }
+
+  void getComments() async {
+    QuerySnapshot snap = await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(widget.snap['postId'])
+        .collection('comments')
+        .get();
+    commentLen = snap.docs.length;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,6 +160,22 @@ class _PostCardState extends State<PostCard> {
                 ),
                 height: height * .475,
               ),
+              // SizedBox(
+              //   height: height * .475,
+              //   width: width * 1,
+              //   child: AspectRatio(
+              //     aspectRatio: 487 / 451,
+              //     child: Container(
+              //       decoration: BoxDecoration(
+              //         image: DecorationImage(
+              //           image: NetworkImage(widget.snap['postUrl']),
+              //           fit: BoxFit.fill,
+              //           alignment: FractionalOffset.topCenter,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               Center(
                 child: AnimatedOpacity(
                   duration: const Duration(
@@ -232,7 +266,16 @@ class _PostCardState extends State<PostCard> {
                               fontWeight: FontWeight.w500)),
                       SizedBox(width: width * .05),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CommentsScreen(
+                                snap: widget.snap,
+                              ),
+                            ),
+                          );
+                        },
                         child: Icon(
                           Icons.mode_comment,
                           size: 25,
@@ -241,7 +284,7 @@ class _PostCardState extends State<PostCard> {
                       ),
                       SizedBox(width: width * .01),
                       Text(
-                        '3',
+                        '$commentLen',
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.w500),
                       ),

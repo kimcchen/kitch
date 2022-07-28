@@ -41,6 +41,7 @@ class FirestoreMethods {
     return res;
   }
 
+  // like post
   Future<void> likePost(String postId, String uid, List likes) async {
     try {
       if (likes.contains(uid)) {
@@ -55,5 +56,33 @@ class FirestoreMethods {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  // upload comment
+  Future<String> postComment(
+      String comment, String uid, String username, String postId) async {
+    String res = "Some error occurred";
+    try {
+      if (comment.isNotEmpty) {
+        String commentId = const Uuid().v1();
+        await _firestore
+            .collection('posts')
+            .doc(postId)
+            .collection('comments')
+            .doc(commentId)
+            .set({
+          'username': username,
+          'uid': uid,
+          'comment': comment,
+          'commentId': commentId,
+          'datePublished': DateTime.now(),
+        });
+      } else {
+        res = 'Text is empty';
+      }
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
   }
 }
