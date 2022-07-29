@@ -9,6 +9,7 @@ class Post {
   final datePublished;
   final String postUrl;
   final likes;
+  final comments;
 
   const Post({
     required this.username,
@@ -19,6 +20,7 @@ class Post {
     required this.datePublished,
     required this.postUrl,
     required this.likes,
+    required this.comments,
   });
 
   // rearranges the info for us and returns it in a map so it can be used by firebase
@@ -31,6 +33,7 @@ class Post {
         "datePublished": datePublished,
         "postUrl": postUrl,
         "likes": likes,
+        "comments": comments,
       };
 
   static Post fromSnap(DocumentSnapshot snap) {
@@ -45,6 +48,7 @@ class Post {
       datePublished: snapshot['datePublished'],
       postUrl: snapshot['postUrl'],
       likes: snapshot['likes'],
+      comments: snapshot['comments'],
     );
   }
 }

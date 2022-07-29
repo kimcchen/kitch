@@ -29,6 +29,7 @@ class FirestoreMethods {
         datePublished: DateTime.now(),
         postUrl: photoUrl,
         likes: [],
+        comments: [],
       );
       // -----------------------------------------------------------------------------
       _firestore.collection('posts').doc(postId).set(
@@ -77,6 +78,9 @@ class FirestoreMethods {
           'commentId': commentId,
           'datePublished': DateTime.now(),
         });
+        await _firestore.collection('posts').doc(postId).update({
+          'comments': FieldValue.arrayUnion([commentId])
+        });
       } else {
         res = 'Text is empty';
       }
@@ -84,5 +88,14 @@ class FirestoreMethods {
       res = e.toString();
     }
     return res;
+  }
+
+  // deleting post
+  Future<void> deletePost(String postId) async {
+    try {
+      await _firestore.collection('posts').doc(postId).delete();
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

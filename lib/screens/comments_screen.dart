@@ -46,16 +46,21 @@ class _CommentsScreenState extends State<CommentsScreen> {
             .collection('comments')
             .orderBy('datePublished', descending: false)
             .snapshots(),
-        builder: (context, snapshot) {
+        builder: (context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
           return ListView.builder(
+            reverse: true,
             itemCount: (snapshot.data! as dynamic).docs.length,
             itemBuilder: (context, index) => CommentCard(
-              snap: (snapshot.data! as dynamic).docs[index].data(),
+              // snap: (snapshot.data! as dynamic).docs[index].data(),
+              snap: snapshot.data!
+                  .docs[((snapshot.data! as dynamic).docs.length) - index - 1]
+                  .data(),
             ),
           );
         },

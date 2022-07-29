@@ -23,6 +23,7 @@ class PostCard extends StatefulWidget {
 class _PostCardState extends State<PostCard> {
   bool isLikeAnimating = false;
   int commentLen = 0;
+  final _firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
@@ -38,6 +39,14 @@ class _PostCardState extends State<PostCard> {
         .get();
     commentLen = snap.docs.length;
   }
+
+  // Future<Stream<QuerySnapshot<Object?>>> getComments() async {
+  //   return FirebaseFirestore.instance
+  //       .collection('posts')
+  //       .doc(widget.snap['postId'])
+  //       .collection('comments')
+  //       .snapshots();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +120,11 @@ class _PostCardState extends State<PostCard> {
                               ]
                                   .map(
                                     (e) => InkWell(
-                                      onTap: () {},
+                                      onTap: () async {
+                                        FirestoreMethods()
+                                            .deletePost(widget.snap['postId']);
+                                        Navigator.pop(context);
+                                      },
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 12, horizontal: 16),
@@ -284,7 +297,8 @@ class _PostCardState extends State<PostCard> {
                       ),
                       SizedBox(width: width * .01),
                       Text(
-                        '$commentLen',
+                        '${widget.snap['comments'].length}',
+                        // '$commentLen',
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.w500),
                       ),
