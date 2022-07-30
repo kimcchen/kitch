@@ -101,6 +101,7 @@ class _EmailPasswordLoginState extends State<EmailPasswordLogin> {
                         hintText: 'Email',
                         textInputType: TextInputType.emailAddress,
                         maxLines: 1,
+                        width: 300,
                       ),
                     ),
                     Container(
@@ -111,6 +112,7 @@ class _EmailPasswordLoginState extends State<EmailPasswordLogin> {
                         textInputType: TextInputType.text,
                         isPass: true,
                         maxLines: 1,
+                        width: 300,
                       ),
                     ),
                     Container(

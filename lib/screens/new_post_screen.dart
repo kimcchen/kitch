@@ -206,6 +206,7 @@ class _NewPostState extends State<NewPost> {
                     hintText: 'Title',
                     textInputType: TextInputType.text,
                     maxLines: 1,
+                    width: 300,
                   ),
                   SizedBox(
                     height: 20,
@@ -216,6 +217,7 @@ class _NewPostState extends State<NewPost> {
                       hintText: 'Caption',
                       textInputType: TextInputType.text,
                       maxLines: 8,
+                      width: 300,
                     ),
                   ),
                   Container(

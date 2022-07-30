@@ -4,6 +4,7 @@ import 'package:auth_practice/screens/home_screen.dart';
 import 'package:auth_practice/screens/login_email_password_screen.dart';
 import 'package:auth_practice/screens/login_screen.dart';
 import 'package:auth_practice/screens/new_post_screen.dart';
+import 'package:auth_practice/screens/search_screen.dart';
 import 'package:auth_practice/services/firebase_auth_methods.dart';
 import 'package:auth_practice/services/firestore_methods.dart';
 import 'package:auth_practice/widgets/post_card.dart';

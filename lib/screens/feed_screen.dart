@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:auth_practice/screens/search_screen.dart';
 import 'package:auth_practice/widgets/post_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -55,10 +56,18 @@ class _FeedScreenState extends State<FeedScreen> {
           ),
         ),
         actions: [
-          Icon(
-            Icons.person_add_alt_1_rounded,
-            size: 30,
-            color: Colors.black,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SearchScreen()),
+              );
+            },
+            child: Icon(
+              Icons.person_add_alt_1_rounded,
+              size: 30,
+              color: Colors.black,
+            ),
           ),
           SizedBox(width: 15),
           Icon(

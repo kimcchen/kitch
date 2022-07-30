@@ -6,6 +6,7 @@ class TextFieldInput extends StatelessWidget {
   final String hintText;
   final TextInputType textInputType;
   final int maxLines;
+  final double width;
   const TextFieldInput({
     Key? key,
     required this.textEditingController,
@@ -13,12 +14,13 @@ class TextFieldInput extends StatelessWidget {
     required this.hintText,
     required this.textInputType,
     required this.maxLines,
+    required this.width,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 300,
+      width: width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
         color: Colors.white,
