@@ -1,5 +1,6 @@
 import 'package:auth_practice/providers/user_provider.dart';
 import 'package:auth_practice/screens/feed_screen.dart';
+import 'package:auth_practice/screens/profile_screen.dart';
 import 'package:auth_practice/screens/home_screen.dart';
 import 'package:auth_practice/screens/login_email_password_screen.dart';
 import 'package:auth_practice/screens/login_screen.dart';
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData) {
-                return FeedScreen();
+                return ProfileScreen();
               } else if (snapshot.hasError) {
                 return Center(
                   child: Text('${snapshot.error}'),
