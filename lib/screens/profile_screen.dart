@@ -41,11 +41,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     ClipPath(
                       clipper: ArcClipper(),
+                      // child: Container(
+                      //   color: Colors.red[200],
+                      //   height: 500,
+                      // ),
                       child: Container(
-                        color: Colors.red[200],
+                        decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                                colors:[
+                                  Color(0xFFEF9A9A),
+                                  Color.fromRGBO(255, 255, 255, 1),
+                                ],
+                                stops:[
+                                  0.5,
+                                  1.0,
+                                ]
+                            )
+                        ),
                         height: 500,
                       ),
                     ),
+
                     Container(
                         alignment: AlignmentDirectional.topStart,
                       child: Column(
@@ -151,19 +169,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 32.0),
-                                  child: Text(
-                                    'Luffy',
-                                    textScaleFactor: 2.0,
-                                    textAlign: TextAlign.center,
-                                  ),
+                            children: <Widget>[
+                              Icon(Icons.create_outlined, color: Colors.transparent,),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text(
+                                  'Luffy',
+                                  textScaleFactor: 2.0,
                                 ),
                               ),
-                              Icon(Icons.create_outlined,)
-                            ]
+                              Icon(Icons.create_outlined,color: Colors.black,),
+                            ],
                           ),
                           Text(
                               '@luffyofficial',
